@@ -1,36 +1,25 @@
-package com.openschool.aop.entity;
+package com.openschool.aop.dto;
 
-import jakarta.persistence.*;
 import com.openschool.aop.enums.TaskStatus;
 
-@Entity
-public class Task {
+public class TaskDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
 
-    @Column(nullable = false)
     String title;
 
-    @Column(nullable = false)
     String description;
 
-    @Column(nullable = false)
     Long userId;
 
-    @Enumerated(EnumType.STRING)
     TaskStatus status;
 
-    public Task(Long id, String title, String description, Long userId, TaskStatus status) {
+    public TaskDto(Long id, String title, String description, Long userId, TaskStatus status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.userId = userId;
         this.status = status;
-    }
-
-    public Task() {
     }
 
     public Long getId() {
@@ -41,37 +30,21 @@ public class Task {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
-        return "Task{" +
+        return "TaskDto{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
