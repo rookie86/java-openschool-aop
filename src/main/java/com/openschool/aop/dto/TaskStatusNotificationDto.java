@@ -4,9 +4,9 @@ import com.openschool.aop.enums.TaskStatus;
 
 public class TaskStatusNotificationDto {
 
-    Long id;
+    private Long id;
 
-    TaskStatus status;
+    private TaskStatus status;
 
     public Long getId() {
         return id;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import com.openschool.aop.enums.TaskStatus;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
 
     @Id

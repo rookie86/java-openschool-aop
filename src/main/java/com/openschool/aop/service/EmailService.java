@@ -9,9 +9,9 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void sendSimpleMessage(String from, String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@openschool.testproject");
+        message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);

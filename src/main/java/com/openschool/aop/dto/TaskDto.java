@@ -4,15 +4,15 @@ import com.openschool.aop.enums.TaskStatus;
 
 public class TaskDto {
 
-    Long id;
+    private Long id;
 
-    String title;
+    private String title;
 
-    String description;
+    private String description;
 
-    Long userId;
+    private Long userId;
 
-    TaskStatus status;
+    private TaskStatus status;
 
     public TaskDto(Long id, String title, String description, Long userId, TaskStatus status) {
         this.id = id;

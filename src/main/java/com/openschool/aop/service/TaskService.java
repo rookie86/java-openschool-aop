@@ -1,20 +1,23 @@
 package com.openschool.aop.service;
 
-import com.openschool.aop.aspect.LogArgs;
+/*import com.openschool.aop.aspect.LogArgs;
 import com.openschool.aop.aspect.LogException;
-import com.openschool.aop.aspect.LogExecutionTime;
+import com.openschool.aop.aspect.LogExecutionTime;*/
+
 import com.openschool.aop.dto.TaskDto;
 import com.openschool.aop.dto.TaskStatusNotificationDto;
 import com.openschool.aop.entity.Task;
 import com.openschool.aop.kafka.KafkaTaskProducer;
 import com.openschool.aop.mapper.TaskMapper;
 import com.openschool.aop.repository.TaskRepository;
+import com.openschoolstarter.starter.aspect.LogArgs;
+import com.openschoolstarter.starter.aspect.LogException;
+import com.openschoolstarter.starter.aspect.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 @Service
@@ -25,6 +28,11 @@ public class TaskService {
 
     @Value("${openschool.kafka.topic.task-status-change}")
     private String taskStatusChangeTopic;
+
+    public TaskService(TaskRepository taskRepository, KafkaTaskProducer kafkaTaskProducer) {
+        this.taskRepository = taskRepository;
+        this.kafkaTaskProducer = kafkaTaskProducer;
+    }
 
     @LogArgs
     @LogException
@@ -71,7 +79,11 @@ public class TaskService {
         if (taskDto.getStatus() != null) {
             if (!taskDto.getStatus().equals(taskDb.getStatus())) {
                 TaskStatusNotificationDto taskStatusNotificationDto = new TaskStatusNotificationDto(id, taskDto.getStatus());
-                sendStatusChangeMessage(taskStatusNotificationDto);
+                try {
+                    sendStatusChangeMessage(taskStatusNotificationDto);
+                } catch (Exception ex) {
+                    //TODO logger
+                }
             }
             taskDb.setStatus(taskDto.getStatus());
         }
@@ -88,8 +100,4 @@ public class TaskService {
         kafkaTaskProducer.sendTo(taskStatusChangeTopic, taskStatusNotificationDto);
     }
 
-    public TaskService(TaskRepository taskRepository, KafkaTaskProducer kafkaTaskProducer) {
-        this.taskRepository = taskRepository;
-        this.kafkaTaskProducer = kafkaTaskProducer;
-    }
 }

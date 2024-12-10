@@ -1,5 +1,6 @@
 package com.openschool.aop.kafka;
 
+import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,10 @@ public class MessageDeserializer<T> extends JsonDeserializer<T> {
     public T deserialize(String topic, Headers headers, byte[] data) {
         try {
             return super.deserialize(topic, headers, data);
-        } catch (Exception e) {
-            logger.warn("Произошла ошибка во время десереализации сообщения {}", new String(data, StandardCharsets.UTF_8), e);
-            return null;
+        } catch (Exception ex) {
+            String dataString = new String(data, StandardCharsets.UTF_8);
+            logger.error("Произошла ошибка во время десереализации сообщения {}", dataString, ex);
+            throw new SerializationException("\"Произошла ошибка во время десереализации сообщения " + dataString + " в топике [" + topic + "]", ex);
         }
     }
 
@@ -31,9 +33,10 @@ public class MessageDeserializer<T> extends JsonDeserializer<T> {
     public T deserialize(String topic, byte[] data) {
         try {
             return super.deserialize(topic, data);
-        } catch (Exception e) {
-            logger.warn("Произошла ошибка во время десереализации сообщения {}", new String(data, StandardCharsets.UTF_8), e);
-            return null;
+        } catch (Exception ex) {
+            String dataString = new String(data, StandardCharsets.UTF_8);
+            logger.error("Произошла ошибка во время десереализации сообщения {}", new String(data, StandardCharsets.UTF_8), ex);
+            throw new SerializationException("\"Произошла ошибка во время десереализации сообщения " + dataString + " в топике [" + topic + "]", ex);
         }
     }
 }
