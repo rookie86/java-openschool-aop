@@ -1,18 +1,14 @@
 package com.openschool.aop.service;
 
-/*import com.openschool.aop.aspect.LogArgs;
-import com.openschool.aop.aspect.LogException;
-import com.openschool.aop.aspect.LogExecutionTime;*/
-
 import com.openschool.aop.dto.TaskDto;
 import com.openschool.aop.dto.TaskStatusNotificationDto;
 import com.openschool.aop.entity.Task;
 import com.openschool.aop.kafka.KafkaTaskProducer;
 import com.openschool.aop.mapper.TaskMapper;
 import com.openschool.aop.repository.TaskRepository;
-import com.openschoolstarter.starter.aspect.LogArgs;
-import com.openschoolstarter.starter.aspect.LogException;
-import com.openschoolstarter.starter.aspect.LogExecutionTime;
+import com.openschool.starter.aspect.LogArgs;
+import com.openschool.starter.aspect.LogException;
+import com.openschool.starter.aspect.LogExecutionTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
