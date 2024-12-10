@@ -1,8 +1,10 @@
 package com.openschool.aop.entity;
 
 import jakarta.persistence.*;
+import com.openschool.aop.enums.TaskStatus;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
 
     @Id
@@ -18,10 +20,15 @@ public class Task {
     @Column(nullable = false)
     Long userId;
 
-    public Task(String title, String description, Long userId) {
+    @Enumerated(EnumType.STRING)
+    TaskStatus status;
+
+    public Task(Long id, String title, String description, Long userId, TaskStatus status) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.userId = userId;
+        this.status = status;
     }
 
     public Task() {
@@ -55,6 +62,14 @@ public class Task {
         this.userId = userId;
     }
 
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -62,6 +77,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", userId=" + userId +
+                ", status=" + status +
                 '}';
     }
 }
